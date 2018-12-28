@@ -1,0 +1,164 @@
+\documentclass[a4paper,11pt, fleqn]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[pdfborder={0 0 0}]{hyperref}
+\usepackage{amsthm} % proof
+\usepackage[T1]{fontenc}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{sectsty} % change section colours
+\usepackage{lipsum}
+\usepackage{titlesec}
+\usepackage{mathrsfs}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{formula}{Formula}[subsection]
+\newtheorem{fs}{Formula}[section]
+
+
+% Use Times fonts
+\usepackage{newtxtext, newtxmath}
+\usepackage[scaled]{helvet}
+
+\newcommand{\dbar}{\textit{\dj}}
+\newcommand{\Dbar}{\textit{\Dj}}
+
+
+\setlength{\oddsidemargin}{0pt}   %%% left margin
+\setlength{\textwidth}{159.2mm}
+\setlength{\topmargin}{0mm}
+\setlength{\headheight}{10mm}
+\setlength{\headsep}{10mm}         %%% length between header and test
+\setlength{\textheight}{219.2mm}
+
+\setlength{\parindent}{0pt}
+
+
+%
+% Colours
+%
+\definecolor{Green}{rgb}{0.0, 0.5, 0.0}
+\definecolor{Blue}{rgb}{0.16, 0.32, 0.75}
+\definecolor{Red}{rgb}{0.82, 0.1, 0.26}
+
+
+%
+% Appearance difinitions
+%
+%\titlespacing*{\section}{0pt}{5.5ex plus 1ex minus .2ex}{4.3ex plus .2ex}
+\titlespacing\section{0pt}{0pt}{24pt}
+
+\title{cross}
+\author{Jun Koda}
+\date{}
+
+\begin{document}
+%
+% Title page
+%
+\vspace{0.3 \paperheight}
+
+\begin{center}
+  {\Huge \textsc{Cross}}
+\end{center}
+
+\tableofcontents
+
+\sectionfont{\sffamily\Huge\color{Green}\selectfont}
+\subsectionfont{\sffamily\color{Green}\selectfont}
+\subsubsectionfont{\sffamily\color{Green}\selectfont}
+\paragraphfont{\sffamily\color{Green}\selectfont}
+
+%
+% Redshift-space distortions
+%
+\newpage
+
+\section{Redshift-space distortions}
+
+The redshift-space distortion $\bm{x} \mapsto \bm{s}$ is,
+%
+\begin{equation}
+  \bm{s} = \bm{x} + \lambda u(\bm{x}) \, \hat{\bm{z}},
+\end{equation}
+where $\lambda \ge 0$ is a controll paramter; $\lambda = 0$ is the real space and $\lambda = 1$ is the redshift space.
+
+$u(\bm{x})$ is the displacement field with plane-parallel along the $z$ axis.
+\begin{equation}
+  u(\bm{x}) = \frac{1}{aH} v_z(\bm{x}),
+\end{equation}
+where $\bm{v}(\bm{x})$ is the peculiar velocity.
+
+\vspace{5mm}
+
+Mass conservation,
+%
+\begin{equation}
+  [1 + \delta(\bm{x})] \,d^3 x = [1 + \delta^s(\bm{s})] \,d^3 s,
+\end{equation}
+%
+gives a formula for redshift-space density contrast,
+%
+\begin{equation}
+  \label{eq:delta-s}
+  \delta_D(\bm{k}) + \hat{\delta}^s(\bm{k}, \lambda)
+  = \int \! d^3 x \, e^{-i\bm{k}\cdot\bm{x}} [1 + \delta(\bm{x})]
+    e^{-i \lambda k_z u(\bm{x})},
+\end{equation}
+%
+and redshift-space power spectrum,
+%
+\begin{equation}
+  P^s(\bm{k}, \lambda) = \int \! d^3 r \, e^{-i\bm{k}\cdot\bm{r}}
+  \Big\langle
+      [1 + \delta(\bm{x})][1 + \delta(\bm{y})] \,
+      e^{-i \lambda k_z [u(\bm{x}) - u(\bm{y})]}\Big\rangle,
+\end{equation}
+where $\delta_D$ is the Dirac delta function and $\bm{r} = \bm{x} - \bm{y}$.\\
+
+The momentum field is defined as,
+%
+\begin{equation}
+  p(\bm{x}) \equiv [1 + \delta(\bm{x})] \, u(\bm{x}).
+\end{equation}
+
+We define the density-momentum cross power spectrum as,
+\begin{align}
+  (2\pi)^3 \delta_D(\bm{k} - \bm{k}') P_{\delta p}(\bm{k}, \lambda)
+  &= \mathrm{Im} \left\langle
+  \hat{\delta}(\bm{k}, \lambda)^* \, \hat{p}(\bm{k}', \lambda)
+  \right\rangle\\
+%
+  (2\pi)^3 \delta_D(\bm{k} - \bm{k}') P_{p \delta}(\bm{k}, \lambda)
+  &= \mathrm{Im} \left\langle
+  \hat{p}(\bm{k}', \lambda) \, \hat{\delta}(\bm{k}, \lambda)^*
+  \right\rangle
+\end{align}
+The ensemble average is pure imaginary and antisymmetric,
+%
+\begin{equation}
+  P_{\delta p}(\bm{k}, \lambda) = P_{p \delta}(-\bm{k}, \lambda)
+  = -P_{p \delta}(\bm{k}, \lambda),
+\end{equation}
+from statistical parity invariance.\\
+
+\clearpage
+\subsection{Derivative}
+
+\begin{equation}
+  \frac{\partial P^s(\bm{k}, \lambda)}{\partial \lambda}
+  = 2 k_z P_{p \delta}(\bm{k}, \lambda)
+\end{equation}
+    
+\begin{equation}\begin{split}
+  \frac{\partial P^s(\bm{k}, \lambda)}{\partial \lambda}
+  &= -ik_z \int \! d^3r \, e^{-i\bm{k}\cdot\bm{r}} \left\langle
+  [1 + \delta(\bm{x})] u(\bm{x}) \delta(\bm{y}) \right\rangle e^{-ik_z \Delta u}
+  - [u(\bm{y}) \mbox{ term}]\\
+  &= k_z P_{p\delta}(\bm{k}, \lambda) - k_z P_{\delta p}(\bm{k}, \lambda)\\
+  &= 2k_z P_{p\delta}(\bm{k}, \lambda)
+\end{split}\end{equation}
+
+\end{document}
