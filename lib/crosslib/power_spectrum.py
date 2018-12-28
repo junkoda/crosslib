@@ -7,7 +7,7 @@ from crosslib.util import _data_dir
 
 def load_multipoles(isnp):
     """
-    Returns auto power Pdd and cross power Pdp as a function of lambda
+    Returns auto power Pdd and cross power Ppd as a function of lambda
 
     Args:
       isnp (str): snapshot index 000 - 010
@@ -18,14 +18,14 @@ def load_multipoles(isnp):
         d['k'] (array): k[ik, imu] [h/Mpc]
         d['nmodes'] (array): number of independent k modes (sum of n realisations)
         d['Pdd'] (array): Pdd[ik, imu, ilambda, irealisation]
-        d['Pdp'] (array): Pdp[ik, imu, ilambda, irealisation]
+        d['Ppd'] (array): Ppd[ik, imu, ilambda, irealisation]
         d['nrealisations']: number of realisations n
         
         d['summary'] (dict): mean and error in the mean of n realisations
         d['summary']['Pdd'] (array):  mean Pdd[ik, imu, ilambda]
         d['summary']['dPdd'] (array): error in the mean dPdd[ik, imu, ilambda]
-        d['summary']['Pdp'] (array):  mean Pdd[ik, imu, ilambda]
-        d['summary']['dPdp'] (array): error in the mean dPdp[ik, imu, ilambda]
+        d['summary']['Ppd'] (array):  mean Pdd[ik, imu, ilambda]
+        d['summary']['dPpd'] (array): error in the mean dPpd[ik, imu, ilambda]
 
     Notes:
       k is mean wavenumber in the bin
@@ -41,7 +41,7 @@ def load_multipoles(isnp):
     nlambda = len(lambdas)
     
     Pdd = None
-    Pdp = None
+    Ppd = None
     
     for n, di in enumerate(dirs):
         for ilambda, lmbda in enumerate(lambdas):
@@ -50,12 +50,12 @@ def load_multipoles(isnp):
 
             if Pdd is None:
                 Pdd = np.empty((a.shape[0], 3, nlambda, nrealisations))
-                Pdp = np.empty_like(Pdd)
+                Ppd = np.empty_like(Pdd)
                 k = a[:, 0]
                 nmodes = np.zeros((a.shape[0]))
 
             Pdd[:, :, ilambda, n] = a[:, 1:4]
-            Pdp[:, :, ilambda, n] = -a[:, 4:7]
+            Ppd[:, :, ilambda, n] = -a[:, 4:7]
 
         nmodes += a[:, 7]
 
@@ -66,11 +66,11 @@ def load_multipoles(isnp):
     d['k'] = k
     d['nmodes'] = nmodes
     d['Pdd'] = Pdd
-    d['Pdp'] = Pdp
+    d['Ppd'] = Ppd
     d['nrealisations'] = nrealisations
 
     summary = {}
-    for p in ['Pdd', 'Pdp']:
+    for p in ['Pdd', 'Ppd']:
         summary[p] = np.mean(d[p], axis=3)
         summary['d' + p] = np.std(d[p], axis=3)/math.sqrt(nrealisations)
 
@@ -90,7 +90,7 @@ def load_lambda_all(isnp):
     nlambda = len(lambdas)
     
     Pdd = None
-    Pdp = None
+    Ppd = None
     
     for n, di in enumerate(dirs):
         for ilambda, lmbda in enumerate(lambdas):
@@ -99,12 +99,12 @@ def load_lambda_all(isnp):
                 if Pdd is None:
                     shape = f['ps2d_dd'].shape
                     Pdd = np.empty((shape[0], shape[1], nlambda, nrealisation))
-                    Pdp = np.empty_like(Pdd)
+                    Ppd = np.empty_like(Pdd)
                     k = f['k'][:]
                     mu = f['mu'][:]
 
                 Pdd[:, :, ilambda, n] = f['ps2d_dd'][:]
-                Pdp[:, :, ilambda, n] = -f['ps2d_dp'][:]
+                Ppd[:, :, ilambda, n] = -f['ps2d_dp'][:]
                 assert(abs(f['lambda'][()] - lmbda) < 1.0e-14)
     
 
@@ -115,7 +115,7 @@ def load_lambda_all(isnp):
     d['k'] = k
     d['mu'] = mu
     d['Pdd'] = Pdd
-    d['Pdp'] = Pdp
+    d['Ppd'] = Ppd
 
     return d
 

@@ -21,7 +21,7 @@ def load_lambda(isnp):
         d['lambda'] = f['lambda'][:]
         d['nrealisations'] = f['nrealisations'][()]
 
-        for p in ['Pdd', 'Pdp']:
+        for p in ['Pdd', 'Ppd']:
             summary[p] = f[p][:]
             summary['d' + p] = f['d' + p][:]
 
