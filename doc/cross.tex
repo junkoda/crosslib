@@ -83,15 +83,16 @@ The redshift-space distortion $\bm{x} \mapsto \bm{s}$ is,
 \begin{equation}
   \bm{s} = \bm{x} + \lambda u(\bm{x}) \, \hat{\bm{z}},
 \end{equation}
-where $\lambda \ge 0$ is a controll paramter; $\lambda = 0$ is the real space and $\lambda = 1$ is the redshift space.
+where $\lambda \ge 0$ is a control parameter; $\lambda = 0$ is the real space and $\lambda = 1$ is the redshift space.
 
-$u(\bm{x})$ is the displacement field with plane-parallel along the $z$ axis.
+$u(\bm{x})$ is the displacement field with plane-parallel line of
+sight along the $z$ axis.
 \begin{equation}
   u(\bm{x}) = \frac{1}{aH} v_z(\bm{x}),
 \end{equation}
 where $\bm{v}(\bm{x})$ is the peculiar velocity.
 
-\vspace{5mm}
+\subsection{Density}
 
 Mass conservation,
 %
@@ -116,7 +117,15 @@ and redshift-space power spectrum,
       [1 + \delta(\bm{x})][1 + \delta(\bm{y})] \,
       e^{-i \lambda k_z [u(\bm{x}) - u(\bm{y})]}\Big\rangle,
 \end{equation}
-where $\delta_D$ is the Dirac delta function and $\bm{r} = \bm{x} - \bm{y}$.\\
+where $\delta_D$ is the Dirac delta function and $\bm{r} = \bm{x} - \bm{y}$.
+We also write
+\begin{equation}
+  \Delta u \equiv u(\bm{x}) - u(\bm{y}),
+\end{equation}
+for short.
+
+
+\subsection{Momentum}
 
 The momentum field is defined as,
 %
@@ -126,39 +135,58 @@ The momentum field is defined as,
 
 We define the density-momentum cross power spectrum as,
 \begin{align}
-  (2\pi)^3 \delta_D(\bm{k} - \bm{k}') P_{\delta p}(\bm{k}, \lambda)
+  (2\pi)^3 \delta_D(\bm{k} - \bm{k}') P_{\delta p}(\bm{k})
   &= \mathrm{Im} \left\langle
-  \hat{\delta}(\bm{k}, \lambda)^* \, \hat{p}(\bm{k}', \lambda)
+  \hat{\delta}(\bm{k})^* \, \hat{p}(\bm{k}')
   \right\rangle\\
 %
-  (2\pi)^3 \delta_D(\bm{k} - \bm{k}') P_{p \delta}(\bm{k}, \lambda)
+  (2\pi)^3 \delta_D(\bm{k} - \bm{k}') P_{p \delta}(\bm{k})
   &= \mathrm{Im} \left\langle
-  \hat{p}(\bm{k}', \lambda) \, \hat{\delta}(\bm{k}, \lambda)^*
+  \hat{p}(\bm{k}) \, \hat{\delta}(\bm{k}')^*
   \right\rangle
 \end{align}
 The ensemble average is pure imaginary and antisymmetric,
 %
 \begin{equation}
-  P_{\delta p}(\bm{k}, \lambda) = P_{p \delta}(-\bm{k}, \lambda)
-  = -P_{p \delta}(\bm{k}, \lambda),
+  P_{\delta p}(\bm{k}) = P_{p \delta}(-\bm{k})
+  = -P_{p \delta}(\bm{k}),
 \end{equation}
 from statistical parity invariance.\\
 
-\clearpage
-\subsection{Derivative}
+The redshift-space cross power spectrum is defined similarly for $\delta^s(\bm{k}, \lambda)$ and $p^s(\bm{k}, \lambda)$,
+%
+\begin{equation}
+  p^s(\bm{x}) d^3 s = [1 + \delta^s(\bm{s})] \,u^s(\bm{s}) d^3 s
+    = [1 + \delta(\bm{x}) ] \, u(\bm{x}) d^3 x,
+\end{equation}
+%
+which is,
+%
+\begin{equation}
+  P^s_{pd}(\bm{k}, \lambda) = \int\! d^3 r \, e^{-i \bm{k}\cdot\bm{r}}
+  [ 1 + \delta(\bm{x}) ] u(\bm{x}) \delta(\bm{y})
+  e^{-i k_z \Delta u}.
+\end{equation}
+%
+Note that the magnitude of $u$ is not rescaled with $\lambda$, only the
+magnitude of redshift space distortion is scaled.
+
+\paragraph{Derivative}
 
 \begin{equation}
   \frac{\partial P^s(\bm{k}, \lambda)}{\partial \lambda}
   = 2 k_z P_{p \delta}(\bm{k}, \lambda)
 \end{equation}
-    
+
+\begin{proof}
 \begin{equation}\begin{split}
   \frac{\partial P^s(\bm{k}, \lambda)}{\partial \lambda}
   &= -ik_z \int \! d^3r \, e^{-i\bm{k}\cdot\bm{r}} \left\langle
   [1 + \delta(\bm{x})] u(\bm{x}) \delta(\bm{y}) \right\rangle e^{-ik_z \Delta u}
   - [u(\bm{y}) \mbox{ term}]\\
   &= k_z P_{p\delta}(\bm{k}, \lambda) - k_z P_{\delta p}(\bm{k}, \lambda)\\
-  &= 2k_z P_{p\delta}(\bm{k}, \lambda)
+  &= 2k_z P_{p\delta}(\bm{k}, \lambda).
 \end{split}\end{equation}
+\end{proof}
 
 \end{document}
