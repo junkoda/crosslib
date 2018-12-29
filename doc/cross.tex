@@ -287,24 +287,39 @@ characteristic function,
   = P(k) \phi(\lambda k_z)^2.
 \end{equation}
 
-The momentum-density cross power become negative when the derivative of the characteristic funtion become negative; there is no physics here,
+The momentum-density cross power become negative when the derivative
+of the characteristic funtion become negative; there is no physics
+here,
 \begin{equation}
   \frac{\partial P^s(\bm{k}, \lambda)}{\partial \lambda}
   = 2k_z P_{p\delta}(\bm{k}, \lambda)
   = P(k) \frac{\partial \phi(\lambda k_z)^2}{\partial \lambda}.
 \end{equation}
 
+The real-space momentum-density cross power is zero, but
+redshift-space cross power is nonzero because the displacement is
+correlated with the velocity.
+
 
 
 \clearpage
 \section{Linear theory}
 
+We denote the linear power spectrum with $\bar{P}$,
 \begin{equation}
   P_{\delta\delta}^{(1)}(k) \equiv \bar{P}(k)
 \end{equation}
 \begin{equation}
   P_{p\delta}^{(1)}(\bm{k}) = \mathrm{Im} \bar{P}_{u\delta}(\bm{k})
   = f\mu \bar{P}(k)/k.
+\end{equation}
+
+\begin{equation}
+  P^{s}(k, \mu, \lambda) = P_{\delta\delta}(k) + \lambda \left[
+    2f\mu^2 P_{\delta \theta}(k) + A_{DD}(k, \mu) \right]
+  + \lambda^2 \left[
+    f^2 \mu^2 P_{\theta\theta}(k) + A_{DU}(k, \mu) + B_{DD}(k, \mu) \right]
+  + \cdots
 \end{equation}
 
 \end{document}
