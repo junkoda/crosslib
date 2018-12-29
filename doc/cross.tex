@@ -92,6 +92,7 @@ sight along the $z$ axis.
 \end{equation}
 where $\bm{v}(\bm{x})$ is the peculiar velocity.
 
+\vspace{5mm}
 \subsection{Density}
 
 Mass conservation,
@@ -115,16 +116,18 @@ and redshift-space power spectrum,
   P^s(\bm{k}, \lambda) = \int \! d^3 r \, e^{-i\bm{k}\cdot\bm{r}}
   \Big\langle
       [1 + \delta(\bm{x})][1 + \delta(\bm{y})] \,
-      e^{-i \lambda k_z [u(\bm{x}) - u(\bm{y})]}\Big\rangle,
+      e^{-i \lambda k_z [u(\bm{x}) - u(\bm{y})]} - 1\Big\rangle,
 \end{equation}
 where $\delta_D$ is the Dirac delta function and $\bm{r} = \bm{x} - \bm{y}$.
-We also write
+We also abbriviate,
 \begin{equation}
-  \Delta u \equiv u(\bm{x}) - u(\bm{y}),
+  \Delta u \equiv u(\bm{x}) - u(\bm{y}).
 \end{equation}
-for short.
 
-
+%
+% Momentum
+%
+\vspace{5mm}
 \subsection{Momentum}
 
 The momentum field is defined as,
@@ -132,6 +135,8 @@ The momentum field is defined as,
 \begin{equation}
   p(\bm{x}) \equiv [1 + \delta(\bm{x})] \, u(\bm{x}).
 \end{equation}
+%
+The ensamble average is zero, $\langle p(\bm{x}) \rangle = 0$.
 
 We define the density-momentum cross power spectrum as,
 \begin{align}
@@ -160,33 +165,146 @@ The redshift-space cross power spectrum is defined similarly for $\delta^s(\bm{k
     = [1 + \delta(\bm{x}) ] \, u(\bm{x}) d^3 x,
 \end{equation}
 %
-which is,
-%
-\begin{equation}
-  P^s_{pd}(\bm{k}, \lambda) = \int\! d^3 r \, e^{-i \bm{k}\cdot\bm{r}}
+\begin{align}
+  P^s_{10} &= P^s_{pd}(\bm{k}, \lambda) = \mathrm{Im}
+  \int\! d^3 r \, e^{-i \bm{k}\cdot\bm{r}}
+  \Big\langle
   [ 1 + \delta(\bm{x}) ] u(\bm{x}) \delta(\bm{y})
-  e^{-i k_z \Delta u}.
-\end{equation}
+  e^{-i k_z \Delta u} \Big\rangle,\\
+%
+  P^s_{11} &= P^s_{pp}(\bm{k}, \lambda) = 
+  \int\! d^3 r \, e^{-i \bm{k}\cdot\bm{r}}
+  \Big\langle
+  [ 1 + \delta(\bm{x}) ] u(\bm{x}) [ 1 + \delta(\bm{y}) ] u(\bm{y})
+  e^{-i k_z \Delta u} \Big\rangle.  
+\end{align}
 %
 Note that the magnitude of $u$ is not rescaled with $\lambda$, only the
-magnitude of redshift space distortion is scaled.
+magnitude of redshift space distortion is scaled.\\
 
-\paragraph{Derivative}
+
+The shot noise is the mass-weighted velocity dispersion,
+\begin{equation}
+  S_{pp} = \bar{n}^{-1} \langle u(\bm{x})^2 \rangle_\mathrm{mass}
+        \sim \bar{n}^{-1} \frac{1}{N} \sum_i u_i^2
+\end{equation}
+which is summed over $N$ particels in a volume $V$, and
+$\bar{n} = N/V$ is the mean number density.
+
+%
+% Energy
+%
+\vspace{5mm}
+\subsection{Energy}
 
 \begin{equation}
-  \frac{\partial P^s(\bm{k}, \lambda)}{\partial \lambda}
-  = 2 k_z P_{p \delta}(\bm{k}, \lambda)
+  e(\bm{x}) \equiv [ 1 + \delta(x) ] \, u(\bm{x})^2.
 \end{equation}
+%
+The ensamble average is nonzero, $\langle e \rangle \neq 0 $; it is
+the mass-weighted velocity dispersion,
+%
+\begin{equation}
+  \langle e(\bm{x}) \rangle = \langle [ 1 + \delta(\bm{x})] u(\bm{x})^2 \rangle
+  \equiv \langle u(x)^2 \rangle_\mathrm{mass} \sim \frac{1}{V}\sum_i u_i^2,
+\end{equation}
+
+\begin{equation}
+  P^s_{20} = P^s_{e\delta}(\bm{k}, \lambda)
+  = \int \! d^3r \, e^{-i\bm{k}\cdot\bm{r}} \Big\langle
+    [ 1 + \delta(\bm{x}) ] u(\bm{x})^2 [ 1 + \delta(\bm{y}) ]
+    e^{-ik_z \Delta u } \Big\rangle.
+\end{equation}
+
+The energy-density power spectrum containes a zero mode,
+\begin{equation}
+  P_{e\delta}(\bm{k}, \lambda)
+  \sim (2\pi)^3 \delta_D(\bm{k}) \, \langle u(\bm{x})^2 \rangle.
+\end{equation}
+
+The shot noise is the same as the momentum-momentum power spectrum,
+\begin{equation}
+  S_{e\delta} = \bar{n}^{-1} \langle u(\bm{x})^2 \rangle_\mathrm{mass}
+\end{equation}
+
+%
+% Derivatives
+%
+\vspace{5mm}
+\subsection{Derivatives}
+
+\begin{align}
+  \frac{\partial P^s(\bm{k}, \lambda)}{\partial \lambda}
+  &= 2 k_z P^s_{p \delta}(\bm{k}, \lambda)\\
+  %
+  \frac{\partial P_{p\delta}^s(\bm{k}, \lambda)}{\partial \lambda}
+  &= k_z \left[ P^s_{pp}(\bm{k}, \lambda) - P^s_{e\delta}(\bm{k}, \lambda)
+    \right].
+\end{align}
 
 \begin{proof}
 \begin{equation}\begin{split}
   \frac{\partial P^s(\bm{k}, \lambda)}{\partial \lambda}
   &= -ik_z \int \! d^3r \, e^{-i\bm{k}\cdot\bm{r}} \left\langle
-  [1 + \delta(\bm{x})] u(\bm{x}) \delta(\bm{y}) \right\rangle e^{-ik_z \Delta u}
-  - [u(\bm{y}) \mbox{ term}]\\
+       [1 + \delta(\bm{x})] u(\bm{x}) \delta(\bm{y}) \right\rangle
+       e^{-i\lambda k_z \Delta u}
+       - [u(\bm{y}) \mbox{ term}]\\
   &= k_z P_{p\delta}(\bm{k}, \lambda) - k_z P_{\delta p}(\bm{k}, \lambda)\\
   &= 2k_z P_{p\delta}(\bm{k}, \lambda).
 \end{split}\end{equation}
+
+\begin{equation}\begin{split}
+  i \frac{\partial P_{p\delta}^s(\bm{k}, \lambda)}{\partial \lambda}
+  &= -ik_z \int\! d^3 r \, e^{-i\bm{k}\cdot\bm{r}} \Big\langle
+  [1 + \delta(\bm{x})]u(\bm{x})^2 [ 1 + \delta(\bm{y}) ]
+  - [1 + \delta(\bm{x})]u(\bm{x}) [ 1 + \delta(\bm{y}) ]
+  \Big\rangle\\
+  &= -ik_z \left[ P^s_{e\delta}(\bm{k}, \lambda) - P^s_{pp}(\bm{k}, \lambda)
+    \right]
+\end{split}\end{equation}
 \end{proof}
+
+\clearpage
+%
+% Uncorrerated velocity
+%
+\section{Uncorrelated velocity}
+
+Suppose the velocity is an uncorrelated field,
+\begin{equation}
+  \langle u(\bm{x}) u(\bm{y}) \rangle = 0 \mbox{ for $\bm{x} \neq \bm{y}$},
+\end{equation}
+which is also uncorrelated with the density.
+In such a case, the power spectrum is simply damped by the
+characteristic function,
+%
+\begin{equation}
+  \phi(\lambda) \equiv \left\langle e^{-i\lambda u(\bm{x})}\right\rangle,
+\end{equation}
+%
+\begin{equation}
+  P^s(\bm{k}, \lambda) = P(k) \left\langle e^{-i\lambda k_z u} \right\rangle^2
+  = P(k) \phi(\lambda k_z)^2.
+\end{equation}
+
+The momentum-density cross power become negative when the derivative of the characteristic funtion become negative; there is no physics here,
+\begin{equation}
+  \frac{\partial P^s(\bm{k}, \lambda)}{\partial \lambda}
+  = 2k_z P_{p\delta}(\bm{k}, \lambda)
+  = P(k) \frac{\partial \phi(\lambda k_z)^2}{\partial \lambda}.
+\end{equation}
+
+
+
+\clearpage
+\section{Linear theory}
+
+\begin{equation}
+  P_{\delta\delta}^{(1)}(k) \equiv \bar{P}(k)
+\end{equation}
+\begin{equation}
+  P_{p\delta}^{(1)}(\bm{k}) = \mathrm{Im} \bar{P}_{u\delta}(\bm{k})
+  = f\mu \bar{P}(k)/k.
+\end{equation}
 
 \end{document}
