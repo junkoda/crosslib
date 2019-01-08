@@ -2,7 +2,8 @@ import numpy as np
 import math
 import h5py
 import glob
-
+import numbers
+     
 from crosslib.util import _data_dir, load_param
 
 
@@ -131,6 +132,89 @@ def load_power_multipoles(isnp):
 
     return d
 
+def load_power2d(isnp, *, lmbda=1.00, unit='displacement'):
+    """
+    Load 2D power spectra for one lambda
+
+    Args:
+      lmbda (float): lambda value
+      unit (str): unit of the velocity 'km/s' or 'displacement' (1/hMpc)
+
+    Returns:
+      d (dict)
+       d['k']      (array): k[ik, imu]
+       d['mu']     (array): mu[ik, imu]
+       d['lambda'] (float)
+       d['Pdd'], d['Pdp'], d['Ppp'] (array): Pab[ik, imu, irealisation]
+       d['summary'] (dict):
+         Pdd, Ppd, Ppp    (array): Pab[ik, imu] mean
+         dPdd, dPpd, dPpp (array): standard deviation in the mean
+    Note:
+      Use load_lambda() for all lambdas
+    """
+
+    if not isinstance(lmbda, str):
+        lmbda = '%.2f' % lmbda
+    
+    data_dir = '/Users/junkoda/Research/cross/doraemon/cross1'
+    
+    filenames = glob.glob('%s/ps2d/%s/0*/ps2d_%s.h5' % (data_dir, isnp, lmbda))
+    filenames = sorted(filenames)
+
+    if not filenames:
+        raise FileNotFoundError('No files found in %s/ps2d/%s/' % (data_dir, isnp))
+
+    n = len(filenames)
+    print(n, 'realisations')
+
+    # Returning data
+    d = {}
+    summary = {}
+
+    d['nrealisations'] = n
+    d['summary'] = summary
+    
+    P2_dd = None
+    P2_pd = None
+    #P2_pp = None
+
+    for i, filename in enumerate(filenames):
+        with h5py.File(filename, 'r') as f:
+            if P2_dd is None:
+                shape = f['ps2d_dd'].shape
+                P2_dd = np.empty((shape[0], shape[1], n))
+                P2_pd = np.empty_like(P2_dd)
+                #P2_pp = np.empty_like(P2_dd)
+                
+                d['k'] = f['k'][:]
+                d['mu'] = f['mu'][:]
+                d['lambda'] = f['lambda'][()]
+
+            P2_dd[:, :, i] = f['ps2d_dd'][:]
+            P2_pd[:, :, i] = -f['ps2d_dp'][:]
+            #P2_pp[:, :, i] = f['ps2d_pp'][:]
+
+    d['Pdd'] = P2_dd
+    d['Ppd'] = P2_pd
+
+    if unit == 'displacement':
+        pass
+    elif unit == 'km/s':
+        param = load_param(isnp)
+        aH = param['a']*param['H']
+        d['Ppd'] *= aH
+    else:
+        raise ValueError('Unknown unit: %s' % unit)
+    
+    #d['Ppp'] = fac_vel**2*P2_pp
+
+    for p in ['Pdd', 'Ppd']:
+        summary[p] = np.mean(d[p], axis=2)
+        if n > 0:
+            summary['d' + p] = np.std(d[p], axis=2)/math.sqrt(n)
+
+    return d
+        
 
 def load_lambda_all(isnp):
     dirs = sorted(glob.glob('%s/ps2d/%s/0*' % (_data_dir, isnp)))

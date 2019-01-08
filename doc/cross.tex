@@ -166,13 +166,13 @@ The redshift-space cross power spectrum is defined similarly for $\delta^s(\bm{k
 \end{equation}
 %
 \begin{align}
-  P^s_{10} &= P^s_{pd}(\bm{k}, \lambda) = \mathrm{Im}
+  P^s_{pd}(\bm{k}, \lambda) &= \mathrm{Im}
   \int\! d^3 r \, e^{-i \bm{k}\cdot\bm{r}}
   \Big\langle
   [ 1 + \delta(\bm{x}) ] u(\bm{x}) \delta(\bm{y})
   e^{-i k_z \Delta u} \Big\rangle,\\
 %
-  P^s_{11} &= P^s_{pp}(\bm{k}, \lambda) = 
+  P^s_{pp}(\bm{k}, \lambda) &= 
   \int\! d^3 r \, e^{-i \bm{k}\cdot\bm{r}}
   \Big\langle
   [ 1 + \delta(\bm{x}) ] u(\bm{x}) [ 1 + \delta(\bm{y}) ] u(\bm{y})
@@ -265,26 +265,44 @@ The shot noise is the same as the momentum-momentum power spectrum,
 \end{proof}
 
 \clearpage
+\subsection{Distribution function approach}
+
+\begin{equation}
+  P^s(\bm{k}, \lambda) = \sum_{m,n}
+    (-i\lambda k_z)^{m+n} \binom{m+n}{m} (-1)^n P_{mn}(\bm{k}),
+\end{equation}
+where,
+\begin{equation}
+  P_{mn}(\bm{k}) = \int\! \! d^3 r \, e^{-i\bm{k}\cdot\bm{r}} \, \Big\langle
+         [ 1 + \delta(\bm{x}) ] u(\bm{x})^m
+         [ 1 + \delta(\bm{y}) ] u(\bm{y})^n
+         \Big\rangle
+\end{equation}
+
+\clearpage
 %
 % Uncorrerated velocity
 %
-\section{Uncorrelated velocity}
+\section{Independent velocity}
+We start from simple cases that the velocity field and the
+density field are mutually independent.
+
+\subsection{Completely uncorrelated velocity}
 
 Suppose the velocity is an uncorrelated field,
 \begin{equation}
-  \langle u(\bm{x}) u(\bm{y}) \rangle = 0 \mbox{ for $\bm{x} \neq \bm{y}$},
+  \langle u(\bm{x}) u(\bm{y}) \rangle = 0 \mbox{ for $\bm{x} \neq \bm{y}$}.
 \end{equation}
-which is also uncorrelated with the density.
 In such a case, the power spectrum is simply damped by the
 characteristic function,
 %
 \begin{equation}
-  \phi(\lambda) \equiv \left\langle e^{-i\lambda u(\bm{x})}\right\rangle,
+  D(\lambda) \equiv \left\langle e^{-i\lambda u(\bm{x})}\right\rangle,
 \end{equation}
 %
 \begin{equation}
   P^s(\bm{k}, \lambda) = P(k) \left\langle e^{-i\lambda k_z u} \right\rangle^2
-  = P(k) \phi(\lambda k_z)^2.
+  = P(k) D(\lambda k_z)^2.
 \end{equation}
 
 The momentum-density cross power become negative when the derivative
@@ -293,13 +311,122 @@ here,
 \begin{equation}
   \frac{\partial P^s(\bm{k}, \lambda)}{\partial \lambda}
   = 2k_z P_{p\delta}(\bm{k}, \lambda)
-  = P(k) \frac{\partial \phi(\lambda k_z)^2}{\partial \lambda}.
+  = P(k) \frac{\partial D(\lambda k_z)^2}{\partial \lambda},
+\end{equation}
+or,
+\begin{equation}
+  P_{p\delta}(\bm{k}, \lambda) = P(k) D'(\lambda k_z) D(\lambda k_z).
 \end{equation}
 
 The real-space momentum-density cross power is zero, but
 redshift-space cross power is nonzero because the displacement is
 correlated with the velocity.
 
+\subsubsection{Kernel expression}
+
+Let $K$ be the probability distribution function of the displacement
+field.
+
+\begin{align}
+  &\int_{-\infty}^\infty \! K(x) \, dx = 1,\\
+  &\hat{K}(k) = \int_{-\infty}^\infty \! K(x) e^{-ik x} dx = D(k)
+\end{align}
+
+\begin{align}
+  &1 + \delta^s(x) = \int_{-\infty}^\infty \! dx' \, K(x - x') [1 + \delta(x')],\\
+  &p^s(x) = \int_{-\infty}^\infty \! dx' \, (x - x') K(x - x') [ 1 + \delta(x') ],
+\end{align}
+where $x$ is the line-of-sight corrdinate.\\
+
+The Fourier transforms are,
+\begin{align}
+  &\delta_D(\bm{k}) + \delta^s(\bm{k}) =
+  \hat{K}(\bm{k}) \left[
+    \delta_D(\bm{k}) + \delta(\bm{k}) \right],\\
+  &\delta^s(\bm{k}) = \hat{K}(\bm{k}) \delta(\bm{k}),
+\end{align}
+using,
+\begin{equation}
+  \hat{K}(\bm{0}) = \int_{-\infty}^\infty K(x) dx = 1.
+\end{equation}
+
+\begin{equation}
+  i \hat{K}'(k_z) [ 1 + \hat{\delta}(\bm{x}) ] = \hat{p}^s(\bm{k}),
+\end{equation}
+from,
+\begin{equation}
+  \hat{K}'(k) = \frac{d}{dk} \hat{K}(k)
+  = \int_{-\infty}^\infty (-i x) K(x) e^{-ik x} dx.
+\end{equation}
+
+\begin{equation}
+  P^s_{p\delta}(\bm{k}) \sim \left\langle \hat{p}^s \hat{\delta}^s \right\rangle
+  \sim \hat{K}'(k_z) \hat{K}(k_z) P(\bm{k}).
+\end{equation}
+Consistency check done.
+
+\subsubsection{Heat flux analogue}
+
+When the kernel is small and the density can be approximated by the first
+term in the Taylor expansion,
+\begin{equation}\begin{split}
+  p^s(\bm{x})
+  &= \int dx' (x - x') K(x - x') \left[
+    \delta(x) + \delta'(x) (x' - x) + \cdots \right]\\
+  &\approx -\sigma_v^2 \delta'(\bm{x}),
+\end{split}\end{equation}
+where we assume that the mean is 0,
+\begin{equation}
+  \int_{-\infty}^\infty x K(x) dx = 0,
+\end{equation}
+and,
+\begin{equation}
+  \sigma_v^2 = \int_{-\infty}^\infty x^2 K(x) dx,
+\end{equation}
+is the variance.
+
+This is the same as the relation between heat flux $\bm{q}$ and
+temperature $T$,
+\begin{equation}
+  \bm{q} = -\kappa \bm{\nabla} T.
+\end{equation}
+
+\subsubsection{Kernel moment expansion}
+
+\begin{equation}\begin{split}
+  &\int_{-\infty}^\infty dx' K(x - x') \delta(x')
+    = \int_{-\infty}^\infty dx' K(x - x')
+    \sum_{n=0}^\infty \frac{1}{n!} (x' - x)^n \frac{d^n}{dx^n} \delta(x)\\
+  &= \sum_{n=0}^\infty \frac{1}{n!} \int_{-\infty}^\infty dx (x - x')^n K(x - x')
+    \left( - \frac{d}{dx} \right)^n \delta(x) \\
+  &\Leftrightarrow \sum_{n=0}^\infty \frac{1}{n!}
+    \frac{d^n \hat{K}(k)}{dk^n} k^n \hat{\delta}(k)
+\end{split}\end{equation}
+
+The usual expasion of the redshift-space density corresponds to a
+Taylar expasion of the density field and moments of the kernel.
+
+\clearpage
+\subsection{Correlated velocity}
+Now we suppose that the velocity field is correlated with itself, but
+velocity and density are independent.
+
+\begin{equation}\begin{split}
+  \delta_D(\bm{k}) + P^s(\bm{k}, \lambda)
+    &= \int \! d^3 r \, e^{-i\bm{k}\cdot\bm{r}} \left\langle
+  [1 + \delta(\bm{x})][ 1 + \delta(\bm{y}]) \right\rangle
+    \Big\langle e^{-i\lambda k_z \Delta u} \Big\rangle\\
+\end{split}\end{equation}
+
+The redshift-space power spectrum is a `convolution' between the
+real-space power spectrum and the pairwise-velocity characteristic
+function.\\
+
+The pairwise-velocity characteristic function is the $P_{UU}$ power spectrum,
+\begin{equation}
+  P_{UU}(\bm{k}, \lambda) = \int\! d^3 r \, e^{-i\bm{k}\cdot\bm{r}} \,
+  \Big\langle e^{-i\lambda k_z \Delta u} - 1 \Big\rangle.
+\end{equation}
 
 
 \clearpage
