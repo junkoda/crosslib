@@ -10,7 +10,9 @@ from crosslib.util import _data_dir
 import crosslib.power_spectrum
 
 from crosslib.util import load_param
-from crosslib.power_spectrum import load_linear_power, load_power_multipoles, load_power2d, compute_sigma_v
+from crosslib.power_spectrum import load_linear_power, load_halofit_power, \
+     load_theta_power_bel, \
+     load_power_multipoles, load_power2d, compute_sigma_v
 
 def load_lambda(isnp):
     filename = '%s/ps2d/ps2d_summary_%s.h5' % (_data_dir, isnp)
