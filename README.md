@@ -4,9 +4,9 @@ Data for ...
 
 ## 1. Requirements
 
-### crosslib
+### for crosslib
 
-`lib/`: Data handling library for Python3.
+which is `lib/crosslib`, data handling library for Python3.
 
 **HDF5** library, e.g.,
 
@@ -17,18 +17,18 @@ $ brew install hdf5
 for Mac Homebrew.
 
 
-**Python3** with **numpy**, **scipy**, and **h5py**.
+**numpy**, **scipy**, and **h5py** for Python3 in addition to crosslib.
 
 e.g.,
 
 ```bash
-$ pip3 install ipywidgets
+$ pip3 install h5py
 ```
 
 if pip is named `pip3` for Python3.
 
 
-### Jupyter notebook examples
+### for Jupyter notebook examples
 
 `notebook/`: Jupyter notebook with matplotlib and ipywidegits.
 
