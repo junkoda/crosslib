@@ -296,12 +296,19 @@ def load_theta_power_bel(isnp, *, Pdd=None, linear=None,
                   halofit is loaded if not provided
       linear (dict): [optional] linear P(k, z) dictionary with 'k' and 'P'
                   linear is loaded if not provided
+      Pdt_simple (bool): use simple exponential formula for Pdt
+      Ptt_simple (bool): use simple exponential formula for Ptt
+     
 
     Returns:
       d['k']:   wavenumber k  [h/Mpc]
       d['Pdd']: P_delta_delta [h/Mpc]^3
       d['Pdt']: P_delta_theta
       d['Ptt']: P_theta_theta
+
+    Convention:
+      theta = - nabla v / (aHf)
+      i.e. delta = theta in the linear limit
 
     Reference:
       Bell et al. https://arxiv.org/abs/1809.09338
@@ -314,7 +321,7 @@ def load_theta_power_bel(isnp, *, Pdd=None, linear=None,
     a1 = -0.817 + 3.198*sigma8
     a2 = 0.877 - 4.191*sigma8
     a3 = -1.199 + 4.629*sigma8
-    kd_inv = -0.111 + 3.811*sigma8**2
+    kd_inv = 0.111 + 3.811*sigma8**2
     b = 0.091 + 0.702*sigma8
     kt_inv = -0.048 + 1.917*sigma8**2
 
@@ -346,16 +353,17 @@ def load_theta_power_bel(isnp, *, Pdd=None, linear=None,
     d['k'] = k
     d['Pdd'] = Pdd
 
+    # Need confirmation from authors exp inside sqrt?
     if Pdt_simple:
-        d['Pdt'] = np.sqrt(Pdd*P)*np.exp(-k*kd_inv)
+        d['Pdt'] = np.sqrt(Pdd*P*np.exp(-k*kd_inv))
     else:
-        d['Pdt'] = np.sqrt(Pdd*P)*np.exp(-k*kd_inv - b*k**6)
+        d['Pdt'] = np.sqrt(Pdd*P*np.exp(-k*kd_inv - b*k**6))
         
     if Ptt_simple:
         d['Ptt'] = P*np.exp(-k*kt_inv)
     else:
         d['Ptt'] = P*np.exp(-k*(a1 + a2*k + a3*k**2))
 
-    d['simga8'] = sigma8
+    d['sigma8'] = sigma8
         
     return d
