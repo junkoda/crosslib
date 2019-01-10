@@ -284,14 +284,13 @@ def load_halofit_power(isnp):
 
 
 def load_theta_power_bel(isnp, *, Pdd=None, linear=None,
-                         Ptt_simple=False):
+                         Pdt_simple=False, Ptt_simple=False):
                                 
     """
     Density- Velocity-divergence cross power using Bell et al. formula
     https://arxiv.org/abs/1809.09338
 
     Args:
-      sim (str): simulation name
       isnp (str): snapshot index
       Pdd (dict): [optional] Non-linear Pdd(k, z) dictionary with 'k' and 'P'
                   halofit is loaded if not provided
@@ -299,8 +298,8 @@ def load_theta_power_bel(isnp, *, Pdd=None, linear=None,
                   linear is loaded if not provided
 
     Returns:
-      d['k']: wavenumber kdd if provided, linear['k'] otherwise
-      d['Pdd']: Pdd if provided, linear['P'] otherwise
+      d['k']:   wavenumber k  [h/Mpc]
+      d['Pdd']: P_delta_delta [h/Mpc]^3
       d['Pdt']: P_delta_theta
       d['Ptt']: P_theta_theta
 
@@ -319,14 +318,16 @@ def load_theta_power_bel(isnp, *, Pdd=None, linear=None,
     b = 0.091 + 0.702*sigma8
     kt_inv = -0.048 + 1.917*sigma8**2
 
+    # Load and check linear power spectrum
     if linear is None:
         linear = load_linear_power(isnp)
 
-    if Pdd is None:
-        Pdd = load_halofit_power(isnp)
-    
     if not ('k' in linear and 'P' in linear):
         raise ValueError("dict linear must contain 'k' and 'P'")
+
+    # Load and check matter power spectrum
+    if Pdd is None:
+        Pdd = load_halofit_power(isnp)
 
     if not ('k' in Pdd and 'P' in Pdd):
         raise ValueError("dict Pdd must contain 'k' and 'P'")
@@ -344,11 +345,17 @@ def load_theta_power_bel(isnp, *, Pdd=None, linear=None,
     d = {}
     d['k'] = k
     d['Pdd'] = Pdd
-    d['Pdt'] = np.sqrt(Pdd*P)*np.exp(-k*kd_inv - b*k**6)
-    
+
+    if Pdt_simple:
+        d['Pdt'] = np.sqrt(Pdd*P)*np.exp(-k*kd_inv)
+    else:
+        d['Pdt'] = np.sqrt(Pdd*P)*np.exp(-k*kd_inv - b*k**6)
+        
     if Ptt_simple:
         d['Ptt'] = P*np.exp(-k*kt_inv)
     else:
         d['Ptt'] = P*np.exp(-k*(a1 + a2*k + a3*k**2))
 
+    d['simga8'] = sigma8
+        
     return d
