@@ -246,9 +246,12 @@ def compute_sigma_v(isnp):
     compute linar sigma_v = \int P(k) dk/(6 pi^2)
     """
     linear = load_linear_power(None)
-    
-    param = load_param(isnp)
-    fac = param['f']*param['D']
+
+    if isnp is None:
+        fac = 1.0
+    else:
+        param = load_param(isnp)
+        fac = param['f']*param['D']
 
     k = linear['k']
     P = linear['P']
@@ -287,7 +290,7 @@ def load_theta_power_bel(isnp, *, Pdd=None, linear=None,
                          Pdt_simple=False, Ptt_simple=False):
                                 
     """
-    Density- Velocity-divergence cross power using Bell et al. formula
+    Density- Velocity-divergence cross power using Bel et al. formula
     https://arxiv.org/abs/1809.09338
 
     Args:
@@ -311,7 +314,7 @@ def load_theta_power_bel(isnp, *, Pdd=None, linear=None,
       i.e. delta = theta in the linear limit
 
     Reference:
-      Bell et al. https://arxiv.org/abs/1809.09338
+      Bel et al. https://arxiv.org/abs/1809.09338
     """
     
     param = load_param()
@@ -321,7 +324,7 @@ def load_theta_power_bel(isnp, *, Pdd=None, linear=None,
     a1 = -0.817 + 3.198*sigma8
     a2 = 0.877 - 4.191*sigma8
     a3 = -1.199 + 4.629*sigma8
-    kd_inv = 0.111 + 3.811*sigma8**2
+    kd_inv = 1.496*sigma8**2 #0.111 + 3.811*sigma8**2
     b = 0.091 + 0.702*sigma8
     kt_inv = -0.048 + 1.917*sigma8**2
 
@@ -353,11 +356,10 @@ def load_theta_power_bel(isnp, *, Pdd=None, linear=None,
     d['k'] = k
     d['Pdd'] = Pdd
 
-    # Need confirmation from authors exp inside sqrt?
     if Pdt_simple:
-        d['Pdt'] = np.sqrt(Pdd*P*np.exp(-k*kd_inv))
+        d['Pdt'] = np.sqrt(Pdd*P)*np.exp(-k*kd_inv)
     else:
-        d['Pdt'] = np.sqrt(Pdd*P*np.exp(-k*kd_inv - b*k**6))
+        d['Pdt'] = np.sqrt(Pdd*P)*np.exp(-k*kd_inv - b*k**6)
         
     if Ptt_simple:
         d['Ptt'] = P*np.exp(-k*kt_inv)
